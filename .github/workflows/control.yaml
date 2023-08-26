@@ -1,0 +1,22 @@
+name: deployer/control
+run-name: deployer/control
+on:
+  workflow_dispatch:
+    branch:
+      - master
+  push:
+    branches:
+      - master
+jobs:
+  deployer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Deployer
+        uses: "./packages/deployer/actions/control"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

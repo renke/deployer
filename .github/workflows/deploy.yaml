@@ -1,0 +1,31 @@
+name: deploy
+run-name: deploy | stage=${{ github.event.inputs.stage }} | commit=${{ github.event.inputs.commit }}
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Stage to deploy to"
+        required: true
+        type: string
+      commit:
+        description: "Commit to deploy"
+        type: string
+        required: true
+env:
+  FORCE_COLOR: 1
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - id: deploy
+        run: |
+          true
+      # - name: Notify Deployer
+      #   if: always()
+      #   uses: "./packages/deployer/actions/notify-deploy"
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     outcome: ${{steps.deploy.outcome}}

@@ -1,0 +1,9 @@
+name: deployer
+description: Run deployer
+inputs:
+  github-token:
+    description: "GitHub token"
+    required: true
+runs:
+  using: "node16"
+  main: "../../build/actions/control.js"
