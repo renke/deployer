@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 
 import { z } from "zod";
 
-import { CommitRef, StageName } from "./model.js";
+import { BranchName, CommitRef, StageName } from "./model.js";
 import { parseStageFromWorkflowName } from "./workflow.js";
 import { DeployStatus } from "./db/deployerDb.js";
 import { octokit, owner, repo, zodCreate, checkIsDefined } from "./misc.js";
@@ -21,7 +21,9 @@ export const DeployRun = z
 export type DeployRun = z.infer<typeof DeployRun>;
 
 // TODO: Only include latest run for a given commit?
-export const fetchFinishedDeployRuns = async (): Promise<DeployRun[]> => {
+export const fetchFinishedDeployRuns = async (input: {
+  branchName: BranchName;
+}): Promise<DeployRun[]> => {
   try {
     const deployRunsRes = await octokit.rest.actions.listWorkflowRuns({
       owner,
@@ -29,7 +31,7 @@ export const fetchFinishedDeployRuns = async (): Promise<DeployRun[]> => {
       // TODO: Make this configurable
       workflow_id: "deploy.yaml",
       // TODO: Make this configurable
-      branch: "master",
+      branch: input.branchName,
     });
 
     const deployRuns = deployRunsRes.data.workflow_runs

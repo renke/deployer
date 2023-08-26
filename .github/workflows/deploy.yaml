@@ -11,8 +11,6 @@ on:
         description: "Commit to deploy"
         type: string
         required: true
-env:
-  FORCE_COLOR: 1
 jobs:
   deploy:
     runs-on: ubuntu-latest

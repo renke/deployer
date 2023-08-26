@@ -4,18 +4,18 @@ import * as os from "node:os";
 import z from "zod";
 
 import { RequestError } from "@octokit/request-error";
-import { BuildStatus, DeployStatus, changeDb } from "../db/deployerDb.js";
-import { checkIsDefined, octokit, owner, repo, zodCreate } from "../misc.js";
-import { CommitRef, StageName } from "../model.js";
-import { ControllerInput } from "./ControllerInput.js";
 import { groupBy } from "lodash-es";
-import { fetchFinishedDeployRuns } from "../deployRuns.js";
+import { BuildStatus, changeDb } from "../db/deployerDb.js";
+import { DeployRun, fetchFinishedDeployRuns } from "../deployRuns.js";
+import { checkIsDefined, octokit, owner, repo } from "../misc.js";
+import { BranchName, CommitRef, StageName } from "../model.js";
+import { ControllerInput } from "./ControllerInput.js";
 
 export const controlCommits = async (input: ControllerInput) => {
   core.info(`Control commits`);
 
   try {
-    const buildRuns = await fetchBuildRuns();
+    const buildRuns = await fetchBuildRuns({ branchName: input.branchName });
 
     const buildRunsByCommitRef = new Map<CommitRef, BuildRun>();
 
@@ -25,7 +25,9 @@ export const controlCommits = async (input: ControllerInput) => {
 
     const buildRunsCommitRefs = Array.from(buildRunsByCommitRef.keys());
 
-    const deployRuns = await fetchFinishedDeployRuns();
+    const deployRuns = await fetchFinishedDeployRuns({
+      branchName: input.branchName,
+    });
 
     const deployRunsSortedByFinishedAt = deployRuns.sort((a, b) => {
       return (
@@ -130,13 +132,15 @@ export const controlCommits = async (input: ControllerInput) => {
 };
 
 // TODO: Only include latest run for a given commit?
-const fetchBuildRuns = async (): Promise<BuildRun[]> => {
+const fetchBuildRuns = async (input: {
+  branchName: BranchName;
+}): Promise<BuildRun[]> => {
   try {
     const buildRunsRes = await octokit.rest.actions.listWorkflowRuns({
       owner,
       repo,
       workflow_id: "build.yaml",
-      branch: "master",
+      branch: input.branchName,
     });
 
     const buildRuns = buildRunsRes.data.workflow_runs

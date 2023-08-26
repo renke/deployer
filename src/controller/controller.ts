@@ -10,18 +10,24 @@ export const control = async (input: ControllerInput) => {
   try {
     await controlCommits(input);
   } catch (error: any) {
+    console.error(error);
+
     core.warning(`Error while controlling commits: ${error}`);
   }
 
   try {
     await controlPullRequest(input);
   } catch (error: any) {
+    console.error(error);
+
     core.warning(`Error while controlling pull request: ${error}`);
   }
 
   try {
     await controlDeployment(input);
   } catch (error: any) {
-    core.warning(`Error while controlling deployment: ${error}`);
+    console.error(error);
+
+    core.error(`Error while controlling deployment: ${error}`);
   }
 };

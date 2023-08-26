@@ -1,43 +1,57 @@
+import { RequestError } from "@octokit/request-error";
 import { octokit, owner, repo } from "../misc.js";
 import { BranchName, StageName } from "../model.js";
+import { z } from "zod";
 
 export const DEPLOYMENT_YAML_FILE_NAME = "deployment.json";
 
-interface DeploymentConfig {
-  deployments: Record<StageName, string | null>;
-}
+export const DeploymentConfig = z.object({
+  deployments: z.record(StageName, z.string().nullable()),
+});
+
+export type DeploymentConfig = z.infer<typeof DeploymentConfig>;
 
 export const getDeploymentConfigAndSha = async (
   input: {
     branchName?: BranchName;
   } = {}
 ): Promise<[DeploymentConfig, string] | undefined> => {
-  const getContentRes = octokit.rest.repos.getContent({
-    owner,
-    repo,
-    ref: input.branchName,
-    path: DEPLOYMENT_YAML_FILE_NAME,
-  });
+  try {
+    const getContentRes = octokit.rest.repos.getContent({
+      owner,
+      repo,
+      ref: input.branchName,
+      path: DEPLOYMENT_YAML_FILE_NAME,
+    });
 
-  const { data } = await getContentRes;
+    const { data } = await getContentRes;
 
-  if (!("content" in data)) {
-    return undefined;
+    if (!("content" in data)) {
+      return undefined;
+    }
+
+    const { content } = data;
+
+    if (content === undefined) {
+      return undefined;
+    }
+
+    const decodedContent = Buffer.from(content, "base64").toString("utf-8");
+
+    const parsedContent = JSON.parse(decodedContent);
+
+    // TODO: Validate config
+
+    return [parsedContent, data.sha];
+  } catch (error) {
+    if (error && typeof error === "object" && "status" in error) {
+      if (error.status === 404) {
+        return undefined;
+      }
+    }
+
+    throw error;
   }
-
-  const { content } = data;
-
-  if (content === undefined) {
-    return undefined;
-  }
-
-  const decodedContent = Buffer.from(content, "base64").toString("utf-8");
-
-  const parsedContent = JSON.parse(decodedContent);
-
-  // TODO: Validate config
-
-  return [parsedContent, data.sha];
 };
 
 export const getDeploymentConfig = async (): Promise<

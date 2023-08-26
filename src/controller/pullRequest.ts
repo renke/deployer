@@ -18,7 +18,7 @@ export const controlPullRequest = async (input: ControllerInput) => {
     await getMostRecentDeployableCommitRef();
 
   if (mostRecentDeployableCommitRef === undefined) {
-    await deletePr();
+    await deletePr({ branchName: input.branchName });
 
     return;
   }
@@ -38,7 +38,7 @@ export const controlPullRequest = async (input: ControllerInput) => {
       StageName.parse("dev")
     )
   ) {
-    await deletePr();
+    await deletePr({ branchName: input.branchName });
 
     return;
   }
@@ -207,13 +207,13 @@ const buildPrBranchName = (): BranchName => {
   return BranchName.parse("deployer/pr/dev");
 };
 
-const deletePr = async () => {
+const deletePr = async (input: { branchName: BranchName }) => {
   core.info("Delete PR");
 
   await deleteBranch();
 
   const prNumber = await findPrNumber({
-    targetBranchName: BranchName.parse("master"),
+    targetBranchName: input.branchName,
   });
 
   if (prNumber === undefined) {

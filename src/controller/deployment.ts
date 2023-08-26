@@ -1,16 +1,14 @@
 import * as core from "@actions/core";
-import { ControllerInput } from "./ControllerInput.js";
+import { getDeploymentConfig } from "../config/deploymentConfig.js";
 import {
-  DeployStatus,
   getCommitBuildStatus,
+  getCommitDeploymentStatus,
   getDeployedCommitRef,
 } from "../db/deployerDb.js";
-import { getDeploymentConfig } from "../config/deploymentConfig.js";
-import { checkIsDefined, octokit, owner, repo, zodCreate } from "../misc.js";
-import { getCommitDeploymentStatus } from "../db/deployerDb.js";
-import { CommitRef, StageName } from "../model.js";
-import { DeployRun, fetchFinishedDeployRuns } from "../deployRuns.js";
+import { octokit, owner, repo } from "../misc.js";
+import { BranchName, CommitRef, StageName } from "../model.js";
 import { parseStageFromWorkflowName } from "../workflow.js";
+import { ControllerInput } from "./ControllerInput.js";
 
 export const controlDeployment = async (input: ControllerInput) => {
   core.info(`Control deployment`);
@@ -21,7 +19,6 @@ export const controlDeployment = async (input: ControllerInput) => {
     core.warning("No deployment config found. Doing nothing.");
 
     // TODO: Undeploy all stages?
-    StageName;
     return;
   }
 
@@ -134,10 +131,11 @@ async function checkIfCommitIsDeployedAndIsSuccess(
   return deploymentStatus === "success";
 }
 
-async function checkIfDeploymentIsInProgress(
-  commitRef: CommitRef,
-  stageName: StageName
-): Promise<boolean> {
+async function checkIfDeploymentIsInProgress(input: {
+  commitRef: CommitRef;
+  stageName: StageName;
+  branchName: BranchName;
+}): Promise<boolean> {
   // TODO: We could probably cache this since we already fetch all runs somewhere else
   const deployRunsRes = await octokit.rest.actions.listWorkflowRuns({
     owner,
@@ -145,7 +143,7 @@ async function checkIfDeploymentIsInProgress(
     // TODO: Make this configurable
     workflow_id: "deploy.yaml",
     // TODO: Make this configurable
-    branch: "master",
+    branch: input.branchName,
   });
 
   const deployInProgressOrQueued = deployRunsRes.data.workflow_runs.some(
@@ -161,7 +159,7 @@ async function checkIfDeploymentIsInProgress(
         return false;
       }
 
-      if (runStageName !== stageName) {
+      if (runStageName !== input.stageName) {
         return false;
       }
 

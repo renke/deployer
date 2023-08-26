@@ -3,10 +3,10 @@ run-name: deployer/control
 on:
   workflow_dispatch:
     branch:
-      - master
+      - main
   push:
     branches:
-      - master
+      - main
 jobs:
   deployer:
     runs-on: ubuntu-latest
@@ -17,6 +17,6 @@ jobs:
           fetch-depth: 0
 
       - name: Deployer
-        uses: "./packages/deployer/actions/control"
+        uses: "./actions/control"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

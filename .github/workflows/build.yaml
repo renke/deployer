@@ -3,9 +3,7 @@ run-name: build
 on:
   push:
     branches:
-      - master
-env:
-  FORCE_COLOR: 1
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
