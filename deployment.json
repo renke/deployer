@@ -1,3 +1,5 @@
 {
-  "deployments": {}
+  "deployments": {
+    "dev": "cf357d5e12e2a276ae472fab3d1dc337ee2e2ec2"
+  }
 }
