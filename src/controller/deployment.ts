@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import { getDeploymentConfig } from "../config/deploymentConfig.js";
 import {
   getCommitBuildStatus,
-  getCommitDeploymentStatus,
+  getCommitDeployStatus,
   getDeployedCommitRef,
 } from "../db/deployerDb.js";
 import { octokit, owner, repo } from "../misc.js";
@@ -125,14 +125,13 @@ async function checkIfCommitIsDeployedAndIsSuccess(
 ): Promise<boolean> {
   const deployedCommitRef = await getDeployedCommitRef(stageName);
 
+  core.info(`Deployed commit ref ${deployedCommitRef}`);
+
   if (deployedCommitRef !== commitRef) {
     return false;
   }
 
-  const deploymentStatus = await getCommitDeploymentStatus(
-    commitRef,
-    stageName
-  );
+  const deploymentStatus = await getCommitDeployStatus(commitRef, stageName);
 
   return deploymentStatus === "success";
 }

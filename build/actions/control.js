@@ -11741,7 +11741,7 @@ var createEmptyBranch = async (branchName) => {
     sha: newCommit.sha
   });
 };
-var getCommitDeploymentStatus = async (commitRef, stageName) => {
+var getCommitDeployStatus = async (commitRef, stageName) => {
   const db = await loadDb();
   return db?.commitByRef[commitRef]?.deployStatus[stageName];
 };
@@ -11839,13 +11839,11 @@ async function checkIfCommitIsNotMarkedAsBuildPassed(commitRef, stageName) {
 }
 async function checkIfCommitIsDeployedAndIsSuccess(commitRef, stageName) {
   const deployedCommitRef = await getDeployedCommitRef(stageName);
+  core2.info(`Deployed commit ref ${deployedCommitRef}`);
   if (deployedCommitRef !== commitRef) {
     return false;
   }
-  const deploymentStatus = await getCommitDeploymentStatus(
-    commitRef,
-    stageName
-  );
+  const deploymentStatus = await getCommitDeployStatus(commitRef, stageName);
   return deploymentStatus === "success";
 }
 async function checkIfDeploymentIsInProgress(input) {

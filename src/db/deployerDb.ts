@@ -135,7 +135,7 @@ const createEmptyBranch = async (branchName: string) => {
   });
 };
 
-export const setCommitDeploymentStatus = async (
+export const setCommitDeployStatus = async (
   commitRef: CommitRef,
   stageName: StageName,
   deploymentStatus: DeployStatus
@@ -157,7 +157,7 @@ export const setCommitDeploymentStatus = async (
   return deploymentStatus;
 };
 
-export const getCommitDeploymentStatus = async (
+export const getCommitDeployStatus = async (
   commitRef: CommitRef,
   stageName: StageName
 ): Promise<DeployStatus | undefined> => {
