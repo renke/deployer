@@ -11838,8 +11838,11 @@ async function checkIfCommitIsNotMarkedAsBuildPassed(commitRef, stageName) {
   return true;
 }
 async function checkIfCommitIsDeployedAndIsSuccess(commitRef, stageName) {
+  core2.info(
+    `Check if commit "${commitRef}" is deployed on stage "${stageName}"`
+  );
   const deployedCommitRef = await getDeployedCommitRef(stageName);
-  core2.info(`Deployed commit ref ${deployedCommitRef}`);
+  core2.info(`Deployed commit ref "${deployedCommitRef}"`);
   if (deployedCommitRef !== commitRef) {
     return false;
   }

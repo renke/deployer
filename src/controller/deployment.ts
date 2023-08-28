@@ -123,9 +123,13 @@ async function checkIfCommitIsDeployedAndIsSuccess(
   commitRef: CommitRef,
   stageName: StageName
 ): Promise<boolean> {
+  core.info(
+    `Check if commit "${commitRef}" is deployed on stage "${stageName}"`
+  );
+
   const deployedCommitRef = await getDeployedCommitRef(stageName);
 
-  core.info(`Deployed commit ref ${deployedCommitRef}`);
+  core.info(`Deployed commit ref "${deployedCommitRef}"`);
 
   if (deployedCommitRef !== commitRef) {
     return false;
