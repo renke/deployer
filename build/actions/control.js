@@ -11971,7 +11971,7 @@ var createOrUpdatePr = async (input) => {
     5,
     (error2, attempt) => {
       console.log(
-        `Failed to create deployment config commit on attempt #${attempt}`
+        `Failed to create deployment config commit on attempt #${attempt + 1}`
       );
       if (error2 && typeof error2 === "object" && "status" in error2) {
         if (error2.status === 409) {

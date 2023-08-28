@@ -75,7 +75,7 @@ const createOrUpdatePr = async (input: {
     5,
     (error, attempt) => {
       console.log(
-        `Failed to create deployment config commit on attempt #${attempt}`
+        `Failed to create deployment config commit on attempt #${attempt + 1}`
       );
 
       if (error && typeof error === "object" && "status" in error) {
