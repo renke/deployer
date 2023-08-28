@@ -3,7 +3,7 @@ import * as core from "@actions/core";
 import { z } from "zod";
 
 import { BranchName, CommitRef, StageName } from "./model.js";
-import { parseStageFromWorkflowName } from "./workflow.js";
+import { parseStageNameFromWorkflowName } from "./workflow.js";
 import { DeployStatus } from "./db/deployerDb.js";
 import { octokit, owner, repo, zodCreate, checkIsDefined } from "./misc.js";
 
@@ -42,7 +42,7 @@ export const fetchFinishedDeployRuns = async (input: {
           return;
         }
 
-        const stageName = parseStageFromWorkflowName(run.name ?? "");
+        const stageName = parseStageNameFromWorkflowName(run.name ?? "");
 
         if (stageName === undefined) {
           core.warning(

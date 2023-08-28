@@ -11755,7 +11755,7 @@ var getDeployedCommitRef = async (stageName) => {
 };
 
 // src/workflow.ts
-var parseStageFromWorkflowName = (name) => {
+var parseStageNameFromWorkflowName = (name) => {
   const stageMatch = name.match(/stage=(\w+)/);
   if (stageMatch === null) {
     return void 0;
@@ -11860,7 +11860,7 @@ async function checkIfDeploymentIsInProgress(input) {
   });
   const deployInProgressOrQueued = deployRunsRes.data.workflow_runs.some(
     (run2) => {
-      const runStageName = parseStageFromWorkflowName(run2.name ?? "");
+      const runStageName = parseStageNameFromWorkflowName(run2.name ?? "");
       if (runStageName === void 0) {
         core2.warning(
           "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
@@ -13558,7 +13558,7 @@ var fetchFinishedDeployRuns = async (input) => {
       if (!deployStatus.success) {
         return;
       }
-      const stageName = parseStageFromWorkflowName(run2.name ?? "");
+      const stageName = parseStageNameFromWorkflowName(run2.name ?? "");
       if (stageName === void 0) {
         core4.warning(
           "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."

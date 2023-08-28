@@ -7,7 +7,7 @@ import {
 } from "../db/deployerDb.js";
 import { octokit, owner, repo } from "../misc.js";
 import { BranchName, CommitRef, StageName } from "../model.js";
-import { parseStageFromWorkflowName } from "../workflow.js";
+import { parseStageNameFromWorkflowName } from "../workflow.js";
 import { ControllerInput } from "./ControllerInput.js";
 
 export const controlDeployment = async (input: ControllerInput) => {
@@ -157,7 +157,7 @@ async function checkIfDeploymentIsInProgress(input: {
 
   const deployInProgressOrQueued = deployRunsRes.data.workflow_runs.some(
     (run) => {
-      const runStageName = parseStageFromWorkflowName(run.name ?? "");
+      const runStageName = parseStageNameFromWorkflowName(run.name ?? "");
 
       if (runStageName === undefined) {
         // TODO: Extract and reuse
