@@ -11,7 +11,7 @@ import { parseStageNameFromWorkflowName } from "../workflow.js";
 import { ControllerInput } from "./ControllerInput.js";
 
 export const controlDeployment = async (input: ControllerInput) => {
-  core.info(`Control deployment`);
+  core.info(`## Control deployment`);
 
   const deploymentConfig = await getDeploymentConfig();
 

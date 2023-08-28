@@ -12,7 +12,7 @@ import { checkBranchExists, octokit, owner, repo, retry } from "../misc.js";
 import { CommitRef, BranchName, StageName } from "../model.js";
 
 export const controlPullRequest = async (input: ControllerInput) => {
-  core.info(`Control pull request`);
+  core.info(`## Control pull request`);
 
   const mostRecentDeployableCommitRef =
     await getMostRecentDeployableCommitRef();
@@ -135,8 +135,6 @@ const createDeploymentConfigCommit = async (input: {
     // TODO
     StageName.parse("dev")
   );
-
-  console.log("EXPECTED SHA", deploymentConfigSha);
 
   const createCommitResponse =
     await octokit.rest.repos.createOrUpdateFileContents({

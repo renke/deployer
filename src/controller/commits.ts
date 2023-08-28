@@ -12,7 +12,7 @@ import { BranchName, CommitRef, StageName } from "../model.js";
 import { ControllerInput } from "./ControllerInput.js";
 
 export const controlCommits = async (input: ControllerInput) => {
-  core.info(`Control commits`);
+  core.info(`## Control commits`);
 
   try {
     const buildRuns = await fetchBuildRuns({ branchName: input.branchName });
