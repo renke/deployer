@@ -8,7 +8,7 @@ import {
   getDeploymentConfig,
   getDeploymentConfigAndSha,
 } from "../config/deploymentConfig.js";
-import { checkBranchExists, octokit, owner, repo } from "../misc.js";
+import { checkBranchExists, octokit, owner, repo, retry } from "../misc.js";
 import { CommitRef, BranchName, StageName } from "../model.js";
 
 export const controlPullRequest = async (input: ControllerInput) => {
@@ -64,24 +64,26 @@ const createOrUpdatePr = async (input: {
     targetBranchName: input.targetBranchName,
   });
 
-  const retry = async <T>(fn: () => Promise<T>, n: number): Promise<T> => {
-    try {
-      return await fn();
-    } catch (error) {
-      if (n === 1) {
-        throw error;
+  retry(
+    async () => {
+      await createDeploymentConfigCommit({
+        targetCommitRef: input.targetCommitRef,
+        targetBranchName: input.targetBranchName,
+        newDesiredCommitRef: input.newDesiredCommitRef,
+      });
+    },
+    3,
+    (error, attempt) => {
+      if (error && typeof error === "object" && "status" in error) {
+        if (error.status === 409) {
+          return false;
+        }
       }
-      return await retry(fn, n - 1);
-    }
-  };
 
-  await retry(async () => {
-    await createDeploymentConfigCommit({
-      targetCommitRef: input.targetCommitRef,
-      targetBranchName: input.targetBranchName,
-      newDesiredCommitRef: input.newDesiredCommitRef,
-    });
-  }, 3);
+      // Stop retrying
+      return true;
+    }
+  );
 
   const prNumber = await findPrNumber({
     targetBranchName: input.targetBranchName,
