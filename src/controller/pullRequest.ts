@@ -72,8 +72,12 @@ const createOrUpdatePr = async (input: {
         newDesiredCommitRef: input.newDesiredCommitRef,
       });
     },
-    3,
+    5,
     (error, attempt) => {
+      console.log(
+        `Failed to create deployment config commit on attempt #${attempt}`
+      );
+
       if (error && typeof error === "object" && "status" in error) {
         if (error.status === 409) {
           return false;

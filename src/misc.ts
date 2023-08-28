@@ -88,9 +88,12 @@ export const retry = async <T>(
       return await fn();
     } catch (e) {
       error = e;
+
+      const attempt = retries;
+
       retries++;
 
-      if (callback && callback(error, retries)) {
+      if (callback && callback(error, attempt)) {
         break;
       }
     }
