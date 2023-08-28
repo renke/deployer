@@ -13588,7 +13588,7 @@ var fetchFinishedDeployRuns = async (input) => {
         return;
       }
       const deployRun = zodCreate(DeployRun, {
-        commitRef: CommitRef.parse(run2.head_sha),
+        commitRef,
         stageName,
         deployStatus: deployStatus.data,
         startedAt: run2.created_at,

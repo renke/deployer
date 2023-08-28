@@ -67,7 +67,7 @@ export const fetchFinishedDeployRuns = async (input: {
         }
 
         const deployRun = zodCreate(DeployRun, {
-          commitRef: CommitRef.parse(run.head_sha),
+          commitRef,
 
           stageName,
 
