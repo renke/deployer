@@ -58,7 +58,13 @@ export const controlDeployment = async (input: ControllerInput) => {
     return;
   }
 
-  if (await checkIfDeploymentIsInProgress(targetCommitRef, stageName)) {
+  if (
+    await checkIfDeploymentIsInProgress({
+      commitRef: targetCommitRef,
+      stageName,
+      branchName: input.branchName,
+    })
+  ) {
     core.info(
       `Another deployment is already in progress on stage "${stageName}". Doing nothing.`
     );
