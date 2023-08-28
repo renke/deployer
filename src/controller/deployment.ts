@@ -162,7 +162,7 @@ async function checkIfDeploymentIsInProgress(input: {
       if (runStageName === undefined) {
         // TODO: Extract and reuse
         core.warning(
-          "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+          `Could not parse stage name from deploy workflow name "${run.name}". This usually means the deploy action is not configured correctly to work with deployer.`
         );
 
         return false;
