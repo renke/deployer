@@ -10,6 +10,7 @@ import { BranchName, CommitRef, StageName } from "../model.js";
 import { parseStageNameFromWorkflowName } from "../workflow.js";
 import { ControllerInput } from "./ControllerInput.js";
 
+// TODO: Make calls a bit more efficient
 export const controlDeployment = async (input: ControllerInput) => {
   core.info(`## Control deployment`);
 
@@ -196,14 +197,32 @@ async function checkIfCommitDeploymentIsFailure(
   commitRef: CommitRef,
   stageName: StageName
 ): Promise<boolean> {
-  // TODO
-  return false;
+  const status = await getDeployedCommitRef(stageName);
+
+  if (status === "success") {
+    return false;
+  }
+
+  return true;
 }
 
 async function checkIfCommitIsDeployedAndIsFailure(
   commitRef: CommitRef,
   stageName: StageName
 ): Promise<boolean> {
-  // TODO
-  return false;
+  core.info(
+    `Check if commit "${commitRef}" is deployed on stage "${stageName}"`
+  );
+
+  const deployedCommitRef = await getDeployedCommitRef(stageName);
+
+  core.info(`Deployed commit ref "${deployedCommitRef}"`);
+
+  if (deployedCommitRef !== commitRef) {
+    return false;
+  }
+
+  const deploymentStatus = await getCommitDeployStatus(commitRef, stageName);
+
+  return deploymentStatus === "failure";
 }

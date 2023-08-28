@@ -11918,10 +11918,23 @@ async function checkIfDeploymentIsInProgress(input) {
   return deployInProgressOrQueued;
 }
 async function checkIfCommitDeploymentIsFailure(commitRef, stageName) {
-  return false;
+  const status = await getDeployedCommitRef(stageName);
+  if (status === "success") {
+    return false;
+  }
+  return true;
 }
 async function checkIfCommitIsDeployedAndIsFailure(commitRef, stageName) {
-  return false;
+  core2.info(
+    `Check if commit "${commitRef}" is deployed on stage "${stageName}"`
+  );
+  const deployedCommitRef = await getDeployedCommitRef(stageName);
+  core2.info(`Deployed commit ref "${deployedCommitRef}"`);
+  if (deployedCommitRef !== commitRef) {
+    return false;
+  }
+  const deploymentStatus = await getCommitDeployStatus(commitRef, stageName);
+  return deploymentStatus === "failure";
 }
 
 // src/controller/pullRequest.ts
