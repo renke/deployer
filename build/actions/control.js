@@ -11760,7 +11760,22 @@ var parseStageNameFromWorkflowName = (name) => {
   if (stageMatch === null) {
     return void 0;
   }
-  return StageName.parse(stageMatch[1]);
+  try {
+    StageName.parse(stageMatch[1]);
+  } catch (err) {
+    return void 0;
+  }
+};
+var parseCommitRefFromMessage = (name) => {
+  const commitRefMatch = name.match(/commit=(\w+)/);
+  if (commitRefMatch === null) {
+    return void 0;
+  }
+  try {
+    return CommitRef.parse(commitRefMatch[1]);
+  } catch (err) {
+    return void 0;
+  }
 };
 
 // src/controller/deployment.ts
@@ -13562,6 +13577,13 @@ var fetchFinishedDeployRuns = async (input) => {
       if (stageName === void 0) {
         core4.warning(
           "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+        );
+        return;
+      }
+      const commitRef = parseCommitRefFromMessage(run2.name ?? "");
+      if (commitRef === void 0) {
+        core4.warning(
+          "Could not parse commit ref from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
         );
         return;
       }

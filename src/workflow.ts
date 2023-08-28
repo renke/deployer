@@ -1,4 +1,4 @@
-import { StageName } from "./model.js";
+import { CommitRef, StageName } from "./model.js";
 
 export const parseStageNameFromWorkflowName = (
   name: string
@@ -9,7 +9,11 @@ export const parseStageNameFromWorkflowName = (
     return undefined;
   }
 
-  return StageName.parse(stageMatch[1]);
+  try {
+    StageName.parse(stageMatch[1]);
+  } catch (err) {
+    return undefined;
+  }
 };
 
 export const parseCommitRefFromMessage = (name: string): string | undefined => {
@@ -19,5 +23,9 @@ export const parseCommitRefFromMessage = (name: string): string | undefined => {
     return undefined;
   }
 
-  return commitRefMatch[1];
+  try {
+    return CommitRef.parse(commitRefMatch[1]);
+  } catch (err) {
+    return undefined;
+  }
 };

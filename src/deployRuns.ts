@@ -3,7 +3,10 @@ import * as core from "@actions/core";
 import { z } from "zod";
 
 import { BranchName, CommitRef, StageName } from "./model.js";
-import { parseStageNameFromWorkflowName } from "./workflow.js";
+import {
+  parseCommitRefFromMessage,
+  parseStageNameFromWorkflowName,
+} from "./workflow.js";
 import { DeployStatus } from "./db/deployerDb.js";
 import { octokit, owner, repo, zodCreate, checkIsDefined } from "./misc.js";
 
@@ -47,6 +50,16 @@ export const fetchFinishedDeployRuns = async (input: {
         if (stageName === undefined) {
           core.warning(
             "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+          );
+
+          return;
+        }
+
+        const commitRef = parseCommitRefFromMessage(run.name ?? "");
+
+        if (commitRef === undefined) {
+          core.warning(
+            "Could not parse commit ref from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
           );
 
           return;
