@@ -7925,6 +7925,23 @@ var checkIsDefined = (v2) => {
 var zodCreate = (schema, value) => {
   return schema.parse(value);
 };
+var retry = async (fn2, n2, callback) => {
+  let retries = 0;
+  let error2;
+  while (retries < n2) {
+    try {
+      return await fn2();
+    } catch (e) {
+      error2 = e;
+      const attempt = retries;
+      retries++;
+      if (callback && callback(error2, attempt)) {
+        break;
+      }
+    }
+  }
+  throw error2;
+};
 
 // node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/index.mjs
 var util;
@@ -11780,7 +11797,7 @@ var parseCommitRefFromMessage = (name) => {
 
 // src/controller/deployment.ts
 var controlDeployment = async (input) => {
-  core2.info(`Control deployment`);
+  core2.info(`## Control deployment`);
   const deploymentConfig = await getDeploymentConfig();
   if (deploymentConfig === void 0) {
     core2.warning("No deployment config found. Doing nothing.");
@@ -11910,7 +11927,7 @@ async function checkIfCommitIsDeployedAndIsFailure(commitRef, stageName) {
 // src/controller/pullRequest.ts
 var core3 = __toESM(require_core());
 var controlPullRequest = async (input) => {
-  core3.info(`Control pull request`);
+  core3.info(`## Control pull request`);
   const mostRecentDeployableCommitRef = await getMostRecentDeployableCommitRef();
   if (mostRecentDeployableCommitRef === void 0) {
     await deletePr({ branchName: input.branchName });
@@ -11943,23 +11960,27 @@ var createOrUpdatePr = async (input) => {
   await createOrResetBranch({
     targetBranchName: input.targetBranchName
   });
-  const retry = async (fn2, n2) => {
-    try {
-      return await fn2();
-    } catch (error2) {
-      if (n2 === 1) {
-        throw error2;
+  retry(
+    async () => {
+      await createDeploymentConfigCommit({
+        targetCommitRef: input.targetCommitRef,
+        targetBranchName: input.targetBranchName,
+        newDesiredCommitRef: input.newDesiredCommitRef
+      });
+    },
+    5,
+    (error2, attempt) => {
+      console.log(
+        `Failed to create deployment config commit on attempt #${attempt}`
+      );
+      if (error2 && typeof error2 === "object" && "status" in error2) {
+        if (error2.status === 409) {
+          return false;
+        }
       }
-      return await retry(fn2, n2 - 1);
+      return true;
     }
-  };
-  await retry(async () => {
-    await createDeploymentConfigCommit({
-      targetCommitRef: input.targetCommitRef,
-      targetBranchName: input.targetBranchName,
-      newDesiredCommitRef: input.newDesiredCommitRef
-    });
-  }, 3);
+  );
   const prNumber = await findPrNumber({
     targetBranchName: input.targetBranchName
   });
@@ -11994,7 +12015,6 @@ var createDeploymentConfigCommit = async (input) => {
     // TODO
     StageName.parse("dev")
   );
-  console.log("EXPECTED SHA", deploymentConfigSha);
   const createCommitResponse = await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo,
@@ -13618,7 +13638,7 @@ var fetchFinishedDeployRuns = async (input) => {
 
 // src/controller/commits.ts
 var controlCommits = async (input) => {
-  core5.info(`Control commits`);
+  core5.info(`## Control commits`);
   try {
     const buildRuns = await fetchBuildRuns({ branchName: input.branchName });
     const buildRunsByCommitRef = /* @__PURE__ */ new Map();
@@ -13740,7 +13760,7 @@ var BuildRun = mod.object({
 
 // src/controller/controller.ts
 var control = async (input) => {
-  core6.info(`Control started`);
+  core6.info(`# Control started`);
   try {
     await controlCommits(input);
   } catch (error2) {

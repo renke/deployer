@@ -62,17 +62,6 @@ export const zodCreate = <SCHEMA extends z.ZodTypeAny>(
   return schema.parse(value);
 };
 
-const retry = async <T>(fn: () => Promise<T>, n: number): Promise<T> => {
-  try {
-    return await fn();
-  } catch (error) {
-    if (n === 1) {
-      throw error;
-    }
-    return await retry(fn, n - 1);
-  }
-};
-
 type RetryCallback = (error: unknown | undefined, retries: number) => boolean;
 
 export const retry = async <T>(
