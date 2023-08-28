@@ -13576,14 +13576,14 @@ var fetchFinishedDeployRuns = async (input) => {
       const stageName = parseStageNameFromWorkflowName(run2.name ?? "");
       if (stageName === void 0) {
         core4.warning(
-          "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+          `Could not parse stage name from deploy workflow name "${run2.name}". This usually means the deploy action is not configured correctly to work with deployer.`
         );
         return;
       }
       const commitRef = parseCommitRefFromMessage(run2.name ?? "");
       if (commitRef === void 0) {
         core4.warning(
-          "Could not parse commit ref from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+          `Could not parse commit ref from deploy workflow name "${run2.name}". This usually means the deploy action is not configured correctly to work with deployer.`
         );
         return;
       }

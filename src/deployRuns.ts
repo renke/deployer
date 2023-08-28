@@ -49,7 +49,7 @@ export const fetchFinishedDeployRuns = async (input: {
 
         if (stageName === undefined) {
           core.warning(
-            "Could not parse stage name from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+            `Could not parse stage name from deploy workflow name "${run.name}". This usually means the deploy action is not configured correctly to work with deployer.`
           );
 
           return;
@@ -59,7 +59,7 @@ export const fetchFinishedDeployRuns = async (input: {
 
         if (commitRef === undefined) {
           core.warning(
-            "Could not parse commit ref from deploy workflow name. This usually means the deploy action is not configured correctly to work with deployer."
+            `Could not parse commit ref from deploy workflow name "${run.name}". This usually means the deploy action is not configured correctly to work with deployer.`
           );
 
           return;
