@@ -13621,7 +13621,9 @@ var controlCommits = async (input) => {
       const sortedCommitRefs = (0, import_node_child_process.execSync)(command).toString("ascii").trim().split(os.EOL).map((line) => {
         return CommitRef.parse(line.trim());
       });
+      core5.info(`Store sorted commit refs`);
       oldDb.commits = sortedCommitRefs;
+      core5.info(`Store build runs`);
       for (const buildRunCommitRef of buildRunsCommitRefs) {
         const buildRun = buildRunsByCommitRef.get(buildRunCommitRef);
         oldDb.commitByRef[buildRunCommitRef] = {
@@ -13630,6 +13632,7 @@ var controlCommits = async (input) => {
           buildStatus: buildRun.buildStatus
         };
       }
+      core5.info(`Store deploy runs`);
       for (const deployRunCommitRef of deployRunsCommitRefs) {
         const deployRun = deployRunsByCommitRef.get(deployRunCommitRef);
         oldDb.commitByRef[deployRunCommitRef] = {
@@ -13647,6 +13650,9 @@ var controlCommits = async (input) => {
           continue;
         }
         const stageName = StageName.parse(rawStageName);
+        core5.info(
+          `Store latest deploy run with commit ref "${latestDeployRun.commitRef}" for stage "${stageName}"`
+        );
         oldDb.stageByName[stageName] = {
           ...oldDb.stageByName[stageName],
           current: latestDeployRun.commitRef

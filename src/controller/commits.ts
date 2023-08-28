@@ -74,7 +74,11 @@ export const controlCommits = async (input: ControllerInput) => {
           return CommitRef.parse(line.trim());
         });
 
+      core.info(`Store sorted commit refs`);
+
       oldDb.commits = sortedCommitRefs;
+
+      core.info(`Store build runs`);
 
       for (const buildRunCommitRef of buildRunsCommitRefs) {
         const buildRun = buildRunsByCommitRef.get(buildRunCommitRef)!;
@@ -87,6 +91,8 @@ export const controlCommits = async (input: ControllerInput) => {
           buildStatus: buildRun.buildStatus,
         };
       }
+
+      core.info(`Store deploy runs`);
 
       for (const deployRunCommitRef of deployRunsCommitRefs) {
         const deployRun = deployRunsByCommitRef.get(deployRunCommitRef)!;
@@ -110,6 +116,10 @@ export const controlCommits = async (input: ControllerInput) => {
         }
 
         const stageName = StageName.parse(rawStageName);
+
+        core.info(
+          `Store latest deploy run with commit ref "${latestDeployRun.commitRef}" for stage "${stageName}"`
+        );
 
         oldDb.stageByName[stageName] = {
           ...oldDb.stageByName[stageName],
