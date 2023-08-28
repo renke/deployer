@@ -11924,6 +11924,7 @@ var controlPullRequest = async (input) => {
   if (DeploymentConfigApi.isDesiredCommitRefForStage(
     deploymentConfig,
     mostRecentDeployableCommitRef,
+    // TODO
     StageName.parse("dev")
   )) {
     await deletePr({ branchName: input.branchName });
@@ -11942,11 +11943,23 @@ var createOrUpdatePr = async (input) => {
   await createOrResetBranch({
     targetBranchName: input.targetBranchName
   });
-  await createDeploymentConfigCommit({
-    targetCommitRef: input.targetCommitRef,
-    targetBranchName: input.targetBranchName,
-    newDesiredCommitRef: input.newDesiredCommitRef
-  });
+  const retry = async (fn2, n2) => {
+    try {
+      return await fn2();
+    } catch (error2) {
+      if (n2 === 1) {
+        throw error2;
+      }
+      return await retry(fn2, n2 - 1);
+    }
+  };
+  await retry(async () => {
+    await createDeploymentConfigCommit({
+      targetCommitRef: input.targetCommitRef,
+      targetBranchName: input.targetBranchName,
+      newDesiredCommitRef: input.newDesiredCommitRef
+    });
+  }, 3);
   const prNumber = await findPrNumber({
     targetBranchName: input.targetBranchName
   });
@@ -11981,6 +11994,7 @@ var createDeploymentConfigCommit = async (input) => {
     // TODO
     StageName.parse("dev")
   );
+  console.log("EXPECTED SHA", deploymentConfigSha);
   const createCommitResponse = await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo,
