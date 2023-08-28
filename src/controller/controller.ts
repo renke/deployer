@@ -5,7 +5,7 @@ import { controlPullRequest } from "./pullRequest.js";
 import { controlCommits } from "./commits.js";
 
 export const control = async (input: ControllerInput) => {
-  core.info(`Control started`);
+  core.info(`# Control started`);
 
   try {
     await controlCommits(input);
