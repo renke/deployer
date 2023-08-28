@@ -27,6 +27,7 @@ export type DeployRun = z.infer<typeof DeployRun>;
 export const fetchFinishedDeployRuns = async (input: {
   branchName: BranchName;
 }): Promise<DeployRun[]> => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const deployRunsRes = await octokit.rest.actions.listWorkflowRuns({
       owner,

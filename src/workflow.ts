@@ -10,7 +10,7 @@ export const parseStageNameFromWorkflowName = (
   }
 
   try {
-    StageName.parse(stageMatch[1]);
+    return StageName.parse(stageMatch[1]);
   } catch (err) {
     return undefined;
   }

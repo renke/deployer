@@ -11761,7 +11761,7 @@ var parseStageNameFromWorkflowName = (name) => {
     return void 0;
   }
   try {
-    StageName.parse(stageMatch[1]);
+    return StageName.parse(stageMatch[1]);
   } catch (err) {
     return void 0;
   }
