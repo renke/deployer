@@ -75,7 +75,7 @@ export const controlDeployment = async (input: ControllerInput) => {
 
   if (await checkIfCommitIsDeployedAndIsFailure(targetCommitRef, stageName)) {
     core.info(
-      `Commit "${targetCommitRef}" is already deployed on stage "${stageName} but failed. Doing nothing.`
+      `Commit "${targetCommitRef}" is already deployed on stage "${stageName}" but failed. Doing nothing.`
     );
 
     return;
@@ -197,13 +197,9 @@ async function checkIfCommitDeploymentIsFailure(
   commitRef: CommitRef,
   stageName: StageName
 ): Promise<boolean> {
-  const status = await getDeployedCommitRef(stageName);
+  const status = await getCommitDeployStatus(commitRef, stageName);
 
-  if (status === "success") {
-    return false;
-  }
-
-  return true;
+  return status === "failure";
 }
 
 async function checkIfCommitIsDeployedAndIsFailure(

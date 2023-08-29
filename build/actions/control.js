@@ -11837,7 +11837,7 @@ var controlDeployment = async (input) => {
   }
   if (await checkIfCommitIsDeployedAndIsFailure(targetCommitRef, stageName)) {
     core2.info(
-      `Commit "${targetCommitRef}" is already deployed on stage "${stageName} but failed. Doing nothing.`
+      `Commit "${targetCommitRef}" is already deployed on stage "${stageName}" but failed. Doing nothing.`
     );
     return;
   }
@@ -11918,11 +11918,8 @@ async function checkIfDeploymentIsInProgress(input) {
   return deployInProgressOrQueued;
 }
 async function checkIfCommitDeploymentIsFailure(commitRef, stageName) {
-  const status = await getDeployedCommitRef(stageName);
-  if (status === "success") {
-    return false;
-  }
-  return true;
+  const status = await getCommitDeployStatus(commitRef, stageName);
+  return status === "failure";
 }
 async function checkIfCommitIsDeployedAndIsFailure(commitRef, stageName) {
   core2.info(
