@@ -4,6 +4,14 @@ on:
   workflow_dispatch:
     branch:
       - main
+  workflow_run:
+    workflows:
+      - build
+      - deploy
+    branches:
+      - main
+    types:
+      - completed
 jobs:
   deployer:
     runs-on: ubuntu-latest
