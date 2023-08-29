@@ -64,7 +64,7 @@ const createOrUpdatePr = async (input: {
     targetBranchName: input.targetBranchName,
   });
 
-  retry(
+  await retry(
     async () => {
       await createDeploymentConfigCommit({
         targetCommitRef: input.targetCommitRef,
@@ -152,6 +152,8 @@ const createDeploymentConfigCommit = async (input: {
         email: "github-actions[bot]@users.noreply.github.com",
       },
     });
+
+  core.info("Created deployment config commit");
 };
 
 type PullRequestNumber = number;

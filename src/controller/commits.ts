@@ -25,6 +25,12 @@ export const controlCommits = async (input: ControllerInput) => {
 
     const buildRunsCommitRefs = Array.from(buildRunsByCommitRef.keys());
 
+    core.info("Build run commit refs:");
+
+    buildRunsCommitRefs.forEach((commitRef) => {
+      core.info(commitRef);
+    });
+
     const deployRuns = await fetchFinishedDeployRuns({
       branchName: input.branchName,
     });
@@ -49,6 +55,12 @@ export const controlCommits = async (input: ControllerInput) => {
     }
 
     const deployRunsCommitRefs = Array.from(deployRunsByCommitRef.keys());
+
+    core.info("Deploy run commit refs:");
+
+    deployRunsCommitRefs.forEach((commitRef) => {
+      core.info(commitRef);
+    });
 
     await changeDb((oldDb) => {
       const commitRefs = new Set([

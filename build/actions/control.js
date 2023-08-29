@@ -11970,7 +11970,7 @@ var createOrUpdatePr = async (input) => {
   await createOrResetBranch({
     targetBranchName: input.targetBranchName
   });
-  retry(
+  await retry(
     async () => {
       await createDeploymentConfigCommit({
         targetCommitRef: input.targetCommitRef,
@@ -12040,6 +12040,7 @@ var createDeploymentConfigCommit = async (input) => {
       email: "github-actions[bot]@users.noreply.github.com"
     }
   });
+  core3.info("Created deployment config commit");
 };
 var findPrNumber = async (input) => {
   const searchPrsRes = await octokit.rest.search.issuesAndPullRequests({
@@ -13656,6 +13657,10 @@ var controlCommits = async (input) => {
       buildRunsByCommitRef.set(buildRun.commitRef, buildRun);
     }
     const buildRunsCommitRefs = Array.from(buildRunsByCommitRef.keys());
+    core5.info("Build run commit refs:");
+    buildRunsCommitRefs.forEach((commitRef) => {
+      core5.info(commitRef);
+    });
     const deployRuns = await fetchFinishedDeployRuns({
       branchName: input.branchName
     });
@@ -13673,6 +13678,10 @@ var controlCommits = async (input) => {
       deployRunsByCommitRef.set(deployRun.commitRef, deployRun);
     }
     const deployRunsCommitRefs = Array.from(deployRunsByCommitRef.keys());
+    core5.info("Deploy run commit refs:");
+    deployRunsCommitRefs.forEach((commitRef) => {
+      core5.info(commitRef);
+    });
     await changeDb((oldDb) => {
       const commitRefs = /* @__PURE__ */ new Set([
         ...oldDb.commits,
