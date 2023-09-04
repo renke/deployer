@@ -1,7 +1,6 @@
 import * as github from "@actions/github";
-import * as core from "@actions/core";
-import { control } from "../controller/controller.js";
 import { ControllerInput } from "../controller/ControllerInput.js";
+import { control } from "../controller/controller.js";
 import { BranchName, CommitRef } from "../model.js";
 
 export const run = async () => {

@@ -7878,71 +7878,6 @@ __export(control_exports, {
 module.exports = __toCommonJS(control_exports);
 var github2 = __toESM(require_github());
 
-// src/controller/controller.ts
-var core6 = __toESM(require_core());
-
-// src/controller/deployment.ts
-var core2 = __toESM(require_core());
-
-// src/misc.ts
-var core = __toESM(require_core());
-var github = __toESM(require_github());
-var getOctokit2 = () => {
-  const token = (() => {
-    const token2 = core.getInput("github-token");
-    if (token2 === "") {
-      return process.env.GITHUB_TOKEN;
-    }
-    return token2;
-  })();
-  if (token === void 0) {
-    core.setFailed("No GitHub token found.");
-    process.exit(1);
-  }
-  return github.getOctokit(token);
-};
-var repo = github.context.repo.repo;
-var owner = github.context.repo.owner;
-var octokit = getOctokit2();
-var checkBranchExists = async (branchName) => {
-  try {
-    const getRefResponse = await octokit.rest.git.getRef({
-      owner,
-      repo,
-      ref: `heads/${branchName}`
-    });
-    if (getRefResponse.status === 200) {
-      return true;
-    }
-    return false;
-  } catch (error2) {
-    return false;
-  }
-};
-var checkIsDefined = (v2) => {
-  return !!v2;
-};
-var zodCreate = (schema, value) => {
-  return schema.parse(value);
-};
-var retry = async (fn2, n2, callback) => {
-  let retries = 0;
-  let error2;
-  while (retries < n2) {
-    try {
-      return await fn2();
-    } catch (e) {
-      error2 = e;
-      const attempt = retries;
-      retries++;
-      if (callback && callback(error2, attempt)) {
-        break;
-      }
-    }
-  }
-  throw error2;
-};
-
 // node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/index.mjs
 var util;
 (function(util2) {
@@ -11233,6 +11168,77 @@ var CommitRef = mod.string().brand("CommitRef");
 var BranchName = mod.string().brand("BranchName");
 var StageName = mod.string().brand("StageName");
 
+// src/controller/ControllerInput.ts
+var ControllerInput = mod.object({
+  branchName: BranchName,
+  commitRef: CommitRef
+}).brand("ControllerInput");
+
+// src/controller/controller.ts
+var core6 = __toESM(require_core());
+
+// src/controller/deployment.ts
+var core2 = __toESM(require_core());
+
+// src/misc.ts
+var core = __toESM(require_core());
+var github = __toESM(require_github());
+var getOctokit2 = () => {
+  const token = (() => {
+    const token2 = core.getInput("github-token");
+    if (token2 === "") {
+      return process.env.GITHUB_TOKEN;
+    }
+    return token2;
+  })();
+  if (token === void 0) {
+    core.setFailed("No GitHub token found.");
+    process.exit(1);
+  }
+  return github.getOctokit(token);
+};
+var repo = github.context.repo.repo;
+var owner = github.context.repo.owner;
+var octokit = getOctokit2();
+var checkBranchExists = async (branchName) => {
+  try {
+    const getRefResponse = await octokit.rest.git.getRef({
+      owner,
+      repo,
+      ref: `heads/${branchName}`
+    });
+    if (getRefResponse.status === 200) {
+      return true;
+    }
+    return false;
+  } catch (error2) {
+    return false;
+  }
+};
+var checkIsDefined = (v2) => {
+  return !!v2;
+};
+var zodCreate = (schema, value) => {
+  return schema.parse(value);
+};
+var retry = async (fn2, n2, callback) => {
+  let retries = 0;
+  let error2;
+  while (retries < n2) {
+    try {
+      return await fn2();
+    } catch (e) {
+      error2 = e;
+      const attempt = retries;
+      retries++;
+      if (callback && callback(error2, attempt)) {
+        break;
+      }
+    }
+  }
+  throw error2;
+};
+
 // src/config/deploymentConfig.ts
 var DEPLOYMENT_YAML_FILE_NAME = "deployment.json";
 var DeploymentConfig = mod.object({
@@ -13801,12 +13807,6 @@ var control = async (input) => {
     core6.error(`Error while controlling deployment: ${error2}`);
   }
 };
-
-// src/controller/ControllerInput.ts
-var ControllerInput = mod.object({
-  branchName: BranchName,
-  commitRef: CommitRef
-}).brand("ControllerInput");
 
 // src/actions/control.ts
 var run = async () => {
