@@ -13812,7 +13812,7 @@ var ControllerInput = mod.object({
 var run = async () => {
   await control(
     ControllerInput.parse({
-      branchName: BranchName.parse(github2.context.ref),
+      branchName: BranchName.parse(process.env.GITHUB_REF_NAME),
       commitRef: CommitRef.parse(github2.context.sha)
     })
   );
