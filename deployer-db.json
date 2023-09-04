@@ -1,0 +1,194 @@
+{
+  "commitByRef": {
+    "cf357d5e12e2a276ae472fab3d1dc337ee2e2ec2": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "5dd6b8dad017c5bbc56d3cf40b67f010f6a3abe5": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "cbe74cd2dadc29c71531e88a2a1a9e091ba13739": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "eb21e6eb589b8d3e17516e6307f516cfacf07dff": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "99a6257eb342cacd83e8128c468246effac8d435": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "fcca1928e8ce214de9a83d17e0e88227127983b0": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "5ff02b2f9d5aa214c42a8e732c317f56f11a7cbd": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "f758bb6df1807d119d167afbab38eed5c014ce59": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "a43396dc590fd18b36dea2a987e045a0f2694892": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "b7e979ab416b3a9c9cddb667c4c8d396db9ab43b": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "bb18bca3955aec400a8cc72243dd4231e9b66ca5": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "9e3f9cc42ed7123a13a5e36ee7380ffb3ab57e33": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "bbcb79d769592aed66fad3fd8f87f75717b6c521": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "b7c5bb9b00f04ba2cee9eb7fdc911dc1091b54e0": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "cf5f68ee5de125164a97af7f8bdb2ec691d3d014": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "841e413568330b10694aa5388d698954e6cde94e": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "9b0fdfa476ed2b51353318fc78e0d6dbf68a4fb1": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "f878bc7919b0639df0f4c54679d1fbc13890c5dc": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "f2c67d74172f8624a52ed4cc2248f2c9b5398104": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "c1c0aea7623c411890db08f6c8088832eb6be444": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "4ee53824b1772e2466609b1424281ab1aa76815c": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "774846702c8bfb97d78990761cccff91232fff98": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "b04a72efeaef909aa6e908a2170871894e16e0c5": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "1e1bae289c34f0bdda41a6de12d977c0d60ab725": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "2e982a8ab48b7c244f2f6541cf3452a1035fb93c": {
+      "deployStatus": {
+        "dev": "failure"
+      },
+      "buildStatus": "success"
+    },
+    "72dd4b37a9911dfebace19d3b156a3d65d643e22": {
+      "deployStatus": {
+        "dev": "success"
+      },
+      "buildStatus": "success"
+    },
+    "94eac8106795138ddb8dba0295707453db1af6dd": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "00bce342f1f253b66e5d3fa73c5ce66960fdc254": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "c853493544b097f113789481a486750d1489eefb": {
+      "deployStatus": {},
+      "buildStatus": "failure"
+    },
+    "189f03c5ef0521dd7029266b4c8f43feeeab8ed6": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    },
+    "6d614c006372c3334af2531ac3ac7fb8c17e5be1": {
+      "deployStatus": {},
+      "buildStatus": "success"
+    }
+  },
+  "stageByName": {
+    "dev": {
+      "current": "72dd4b37a9911dfebace19d3b156a3d65d643e22"
+    }
+  },
+  "commits": [
+    "6d614c006372c3334af2531ac3ac7fb8c17e5be1",
+    "189f03c5ef0521dd7029266b4c8f43feeeab8ed6",
+    "72dd4b37a9911dfebace19d3b156a3d65d643e22",
+    "94eac8106795138ddb8dba0295707453db1af6dd",
+    "00bce342f1f253b66e5d3fa73c5ce66960fdc254",
+    "c853493544b097f113789481a486750d1489eefb",
+    "2e982a8ab48b7c244f2f6541cf3452a1035fb93c",
+    "774846702c8bfb97d78990761cccff91232fff98",
+    "b04a72efeaef909aa6e908a2170871894e16e0c5",
+    "1e1bae289c34f0bdda41a6de12d977c0d60ab725",
+    "c1c0aea7623c411890db08f6c8088832eb6be444",
+    "4ee53824b1772e2466609b1424281ab1aa76815c",
+    "f2c67d74172f8624a52ed4cc2248f2c9b5398104",
+    "f878bc7919b0639df0f4c54679d1fbc13890c5dc",
+    "9b0fdfa476ed2b51353318fc78e0d6dbf68a4fb1",
+    "841e413568330b10694aa5388d698954e6cde94e",
+    "cf5f68ee5de125164a97af7f8bdb2ec691d3d014",
+    "b7c5bb9b00f04ba2cee9eb7fdc911dc1091b54e0",
+    "bbcb79d769592aed66fad3fd8f87f75717b6c521",
+    "9e3f9cc42ed7123a13a5e36ee7380ffb3ab57e33",
+    "bb18bca3955aec400a8cc72243dd4231e9b66ca5",
+    "b7e979ab416b3a9c9cddb667c4c8d396db9ab43b",
+    "a43396dc590fd18b36dea2a987e045a0f2694892",
+    "f758bb6df1807d119d167afbab38eed5c014ce59",
+    "5ff02b2f9d5aa214c42a8e732c317f56f11a7cbd",
+    "fcca1928e8ce214de9a83d17e0e88227127983b0",
+    "99a6257eb342cacd83e8128c468246effac8d435",
+    "eb21e6eb589b8d3e17516e6307f516cfacf07dff",
+    "cbe74cd2dadc29c71531e88a2a1a9e091ba13739",
+    "5dd6b8dad017c5bbc56d3cf40b67f010f6a3abe5",
+    "cf357d5e12e2a276ae472fab3d1dc337ee2e2ec2"
+  ]
+}
