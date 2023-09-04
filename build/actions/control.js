@@ -13779,7 +13779,9 @@ var BuildRun = mod.object({
 
 // src/controller/controller.ts
 var control = async (input) => {
-  core6.info(`# Control started`);
+  core6.info(
+    `# Control started for branch "${input.branchName}" and commit "${input.commitRef}"`
+  );
   try {
     await controlCommits(input);
   } catch (error2) {
