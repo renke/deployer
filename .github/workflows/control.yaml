@@ -12,6 +12,9 @@ on:
       - main
     types:
       - completed
+  push:
+    branches:
+      - main
 jobs:
   deployer:
     runs-on: ubuntu-latest
