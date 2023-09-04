@@ -161,6 +161,7 @@ type PullRequestNumber = number;
 const findPrNumber = async (input: {
   targetBranchName: BranchName;
 }): Promise<PullRequestNumber | undefined> => {
+  // TODO: Is this not working?
   const searchPrsRes = await octokit.rest.search.issuesAndPullRequests({
     q: `repo:${owner}/${repo}+head:${buildPrBranchName()}+base:${
       input.targetBranchName
